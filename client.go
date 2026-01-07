@@ -83,6 +83,14 @@ func (c *GorseClient) GetNonPersonalized(ctx context.Context, name string, categ
 	return request[[]Score, any](ctx, c, "GET", c.entryPoint+path, nil)
 }
 
+func (c *GorseClient) GetCollaborativeFiltering(ctx context.Context, userId string, category string, n int, offset int) ([]Score, error) {
+	path := fmt.Sprintf("/api/collaborative-filtering/%s?n=%d&offset=%d&user-id=\"%s\"", userId, n, offset, userId)
+	if category != "" {
+		path += fmt.Sprintf("&category=%s", category)
+	}
+	return request[[]Score, any](ctx, c, "GET", c.entryPoint+path, nil)
+}
+
 func (c *GorseClient) GetRecommendOffSet(ctx context.Context, userId string, category string, n, offset int) ([]string, error) {
 	return request[[]string, any](ctx, c, "GET", c.entryPoint+fmt.Sprintf("/api/recommend/%s/%s?n=%d&offset=%v", userId, category, n, offset), nil)
 }
